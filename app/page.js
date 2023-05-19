@@ -7,10 +7,10 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <div className="py-10 mx-auto max-w-md">
+      <div className="py-10 mx-auto max-w-md sm:max-w-lg md:max-w-2xl">
         <SearchBar />
       </div>
-      <div className="py-3 mx-auto max-w-md">
+      <div className="py-3 mx-auto max-w-md sm:max-w-lg md:max-w-2xl">
         <SearchResults />
       </div>
     </>
