@@ -1,4 +1,5 @@
 import React from "react";
+import SaveButton from "./SaveButton";
 
 export default function Track({ id, name, artist, album }) {
   return (
@@ -12,9 +13,7 @@ export default function Track({ id, name, artist, album }) {
           <span className="lowercase">by</span> {artist}
         </span>
       </p>
-      <div className="border px-1.5 rounded-full hover:bg-purple-700 hover:border-purple-400">
-        <button className="">+</button>
-      </div>
+      <SaveButton songId={id} />
     </li>
   );
 }
