@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply text-white h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900 via-cyan-800 to-fuchsia-900;
+  @apply text-white h-full lg:h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900 via-cyan-800 to-fuchsia-900;
 }
