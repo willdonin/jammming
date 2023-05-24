@@ -1,19 +1,20 @@
+"use client";
 import React from "react";
 import SaveButton from "./SaveButton";
 
-export default function Track({ id, name, artist, album }) {
+export default function Track({ song }) {
   return (
     <li
-      className="flex justify-between items-center py-3 px-2 border-b border-purple-400/75 last:border-none capitalize"
-      key={id}
+      key={song.id}
+      className="flex justify-between items-center px-2 py-4 border-b border-purple-400/75 last:border-none capitalize auto-rows-min [&>button]:ml-2"
     >
-      <p>
-        {name} ({album})
+      <p className="">
+        {song.name} ({song.album})
         <span className="pl-2 text-gray-400/75">
-          <span className="lowercase">by</span> {artist}
+          <span className="lowercase">by</span> {song.artist}
         </span>
       </p>
-      <SaveButton songId={id} />
+      <SaveButton id={song.id} />
     </li>
   );
 }

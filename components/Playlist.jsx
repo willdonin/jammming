@@ -1,6 +1,12 @@
 import React from "react";
-import Tracklist, { getTracks } from "./Tracklist";
+import Tracklist from "./Tracklist";
 
-export default function Playlist({ items }) {
-  return <Tracklist title="Playlist Tracks" tracks={getTracks(items)} />;
+export default function Playlist({ items, playlistTitle, onTitleChange }) {
+  return (
+    <Tracklist
+      inputTitle={playlistTitle}
+      items={items}
+      onChange={onTitleChange}
+    />
+  );
 }
