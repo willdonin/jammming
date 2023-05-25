@@ -1,4 +1,5 @@
 import React from "react";
+import Track from "./Track";
 
 // ** This object holds all styles for the Tracklist component.
 // ** we keep the code DRY here.
@@ -12,7 +13,13 @@ const style = {
     "flex justify-between items-center py-4 px-2 border-b border-purple-400/75 last:border-none capitalize ",
 };
 
-export default function Tracklist({ title, items, inputTitle, onChange }) {
+export default function Tracklist({
+  title,
+  tracks,
+  inputTitle,
+  onChange,
+  addToPlaylist,
+}) {
   return (
     <div className={style.box}>
       {/* If component title is true then we display the title
@@ -30,8 +37,10 @@ export default function Tracklist({ title, items, inputTitle, onChange }) {
       <ul className="">
         {/* if the component contains track we are going to display it
             else we will show that the result is empty. */}
-        {items.length !== 0 ? (
-          items
+        {tracks ? (
+          tracks.map((track) => (
+            <Track song={track} addToPlaylist={addToPlaylist} />
+          ))
         ) : (
           <li className={style.noResult}>
             <p className="">0 results found.</p>

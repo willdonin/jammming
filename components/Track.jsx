@@ -2,7 +2,7 @@
 import React from "react";
 import SaveButton from "./SaveButton";
 
-export default function Track({ song }) {
+export default function Track({ song, addToPlaylist }) {
   return (
     <li
       key={song.id}
@@ -14,7 +14,7 @@ export default function Track({ song }) {
           <span className="lowercase">by</span> {song.artist}
         </span>
       </p>
-      <SaveButton id={song.id} />
+      <SaveButton onClick={() => addToPlaylist(song.id)} />
     </li>
   );
 }

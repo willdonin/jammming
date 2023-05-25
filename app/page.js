@@ -3,11 +3,10 @@ import React from "react";
 import Nav from "@/components/Nav";
 import SearchBar from "@/components/SearchBar";
 import Playlist from "@/components/Playlist";
-import Track from "@/components/Track";
 import SearchResults from "@/components/SearchResults";
 import { useState } from "react";
 
-function makeApiCall(searchInput = "") {
+function makeApiCall(searchInput) {
   const result = [];
 
   if (searchInput === "frozen") {
@@ -55,19 +54,8 @@ function makeApiCall(searchInput = "") {
   return result;
 }
 
-function createTracklist(items) {
-  const list = [];
-
-  Array.from(items).forEach((element) => {
-    list.push(<Track song={element} />);
-  });
-
-  return list;
-}
-
 export default function Home() {
   const [result, setResult] = useState("");
-  const [tracklist, setTracklist] = useState([]);
   const [playlist, setPlaylist] = useState({
     name: "My Playlist",
     tracks: [],
@@ -80,14 +68,31 @@ export default function Home() {
   }
 
   function handleSearch(event) {
+    // * Prevents from reloading.
     event.preventDefault();
     // * When user searches it will make an API call to spotify
     // * then the result will be stored on result->useState.
     setResult(makeApiCall(event.target.value));
+  }
 
-    // * We then create a list of tracks with the result of the API call.
-    // * we store the tracks inside the tracklist variable.
-    setTracklist(createTracklist(result));
+  //* this function handles how to add a track to the playlist.
+  function handleAddToPlaylist(id) {
+    // * if the song it is already on the playlist
+    // * this function returns.
+    const newTrack = result.filter((result) => result.id === id)[0];
+    if (
+      playlist.tracks.filter((result) => result.id === newTrack.id).length > 0
+    ) {
+      //TODO: Need functionality to change button to disabled or
+      //TODO: change icon o button.
+      return;
+    }
+
+    // * here we get the playlist and add the song chosen.
+    setPlaylist({
+      ...playlist,
+      tracks: [...playlist.tracks, newTrack],
+    });
   }
 
   return (
@@ -97,10 +102,10 @@ export default function Home() {
         <SearchBar onSearch={handleSearch} />
       </div>
       <div className="mx-4 lg:mx-28 xl:mx-56 my-10 flex flex-wrap gap-4 justify-center sm:flex-nowrap">
-        <SearchResults items={tracklist} />
+        <SearchResults result={result} addToPlaylist={handleAddToPlaylist} />
         <Playlist
           playlistTitle={playlist.name}
-          items={playlist.tracks}
+          result={playlist.tracks}
           onTitleChange={handlePlaylistTitleChange}
         />
       </div>

@@ -1,16 +1,11 @@
 "use client";
 import React from "react";
 
-export default function SaveButton({ onButtonClick, id }) {
-  function handleClick(event) {
-    alert(event.target.value);
-  }
-
+export default function SaveButton({ onClick }) {
   return (
     <button
       className="border px-1.5 rounded-full hover:bg-purple-700 hover:border-purple-400"
-      value={id}
-      onClick={handleClick}
+      onClick={onClick}
       type="button"
     >
       +
