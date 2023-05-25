@@ -1,20 +1,38 @@
 "use client";
 import React from "react";
-import SaveButton from "./SaveButton";
+import TrackButton from "./TrackButton";
 
-export default function Track({ song, addToPlaylist }) {
+// * This styles the track. All tracks have a standard style
+// * and depending on he item we add some extra styling.
+const style = {
+  name: "flex justify-between items-center px-2 py-4 border-b border-purple-400/75 last:border-none capitalize auto-rows-min",
+  artist: "pl-2 text-gray-400/75",
+  by: "lowercase",
+};
+
+export default function Track({
+  track,
+  addToPlaylist,
+  removeFromPlaylist,
+  remove,
+}) {
   return (
-    <li
-      key={song.id}
-      className="flex justify-between items-center px-2 py-4 border-b border-purple-400/75 last:border-none capitalize auto-rows-min [&>button]:ml-2"
-    >
-      <p className="">
-        {song.name} ({song.album})
-        <span className="pl-2 text-gray-400/75">
-          <span className="lowercase">by</span> {song.artist}
+    <li key={track.id} className={style.name}>
+      <p>
+        {track.name} ({track.album})
+        <span className={style.artist}>
+          <span className={style.by}>by</span> {track.artist}
         </span>
       </p>
-      <SaveButton onClick={() => addToPlaylist(song.id)} />
+      <TrackButton
+        onClick={() =>
+          // * If item is on playlist we display the remove button
+          // * with the remove functionality
+          !remove ? addToPlaylist(track.id) : removeFromPlaylist(track.id)
+        }
+        // * tells if is a remove button or not.
+        remove={remove ? true : false}
+      />
     </li>
   );
 }

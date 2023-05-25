@@ -55,7 +55,7 @@ function makeApiCall(searchInput) {
 }
 
 export default function Home() {
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState([]);
   const [playlist, setPlaylist] = useState({
     name: "My Playlist",
     tracks: [],
@@ -83,8 +83,6 @@ export default function Home() {
     if (
       playlist.tracks.filter((result) => result.id === newTrack.id).length > 0
     ) {
-      //TODO: Need functionality to change button to disabled or
-      //TODO: change icon o button.
       return;
     }
 
@@ -92,6 +90,17 @@ export default function Home() {
     setPlaylist({
       ...playlist,
       tracks: [...playlist.tracks, newTrack],
+    });
+  }
+
+  function handleRemoveFromPlaylist(id) {
+    // * we filter the playlist without the removed item.
+    const newList = playlist.tracks.filter((result) => result.id !== id);
+    // * here we get the playlist update the playlist
+    // * with the new list without the removed item.
+    setPlaylist({
+      ...playlist,
+      tracks: newList,
     });
   }
 
@@ -107,6 +116,7 @@ export default function Home() {
           playlistTitle={playlist.name}
           result={playlist.tracks}
           onTitleChange={handlePlaylistTitleChange}
+          onRemove={handleRemoveFromPlaylist}
         />
       </div>
     </>

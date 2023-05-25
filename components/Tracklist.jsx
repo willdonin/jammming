@@ -3,14 +3,13 @@ import Track from "./Track";
 
 // ** This object holds all styles for the Tracklist component.
 // ** we keep the code DRY here.
-
 const style = {
   box: "basis-full sm:basis-6/12 bg-purple-600/[0.40] rounded-lg p-4 ",
   title:
     "text-center w-full py-2 border rounded font-bold bg-purple-600/25 border-purple-400/75 mb-4 ",
   input: "placeholder:text-white ",
   noResult:
-    "flex justify-between items-center py-4 px-2 border-b border-purple-400/75 last:border-none capitalize ",
+    "flex justify-center py-4 px-2 border-b border-purple-400/75 last:border-none capitalize ",
 };
 
 export default function Tracklist({
@@ -19,6 +18,8 @@ export default function Tracklist({
   inputTitle,
   onChange,
   addToPlaylist,
+  onRemove,
+  remove,
 }) {
   return (
     <div className={style.box}>
@@ -37,13 +38,18 @@ export default function Tracklist({
       <ul className="">
         {/* if the component contains track we are going to display it
             else we will show that the result is empty. */}
-        {tracks ? (
+        {tracks.length ? (
           tracks.map((track) => (
-            <Track song={track} addToPlaylist={addToPlaylist} />
+            <Track
+              track={track}
+              addToPlaylist={addToPlaylist}
+              removeFromPlaylist={onRemove}
+              remove={remove ? true : false}
+            />
           ))
         ) : (
           <li className={style.noResult}>
-            <p className="">0 results found.</p>
+            <p class="">0 results found.</p>
           </li>
         )}
       </ul>
