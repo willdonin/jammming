@@ -5,6 +5,7 @@ import SearchBar from "@/components/SearchBar";
 import Playlist from "@/components/Playlist";
 import SearchResults from "@/components/SearchResults";
 import { useState } from "react";
+import SaveButton from "@/components/SaveButton";
 
 function makeApiCall(searchInput) {
   const result = [];
@@ -104,6 +105,13 @@ export default function Home() {
     });
   }
 
+  // * implements the save functionality to spotify.
+  function handleSaveToSpotify() {
+    const trackIds = playlist.tracks.map((track) => track.id);
+    alert(trackIds);
+    // TODO: Need to implement save function with API.
+  }
+
   return (
     <>
       <Nav />
@@ -118,6 +126,9 @@ export default function Home() {
           onTitleChange={handlePlaylistTitleChange}
           onRemove={handleRemoveFromPlaylist}
         />
+      </div>
+      <div className="text-center m-4 lg:mx-28 xl:mx-56">
+        <SaveButton onClick={handleSaveToSpotify} />
       </div>
     </>
   );
