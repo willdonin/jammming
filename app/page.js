@@ -1,66 +1,78 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Nav from "@/components/Nav";
 import SearchBar from "@/components/SearchBar";
 import Playlist from "@/components/Playlist";
 import SearchResults from "@/components/SearchResults";
 import { useState } from "react";
 import SaveButton from "@/components/SaveButton";
-
-function makeApiCall(searchInput) {
-  const result = [];
-
-  if (searchInput === "frozen") {
-    const hardCodedResult = [
-      {
-        id: 1,
-        name: "Let It Go",
-        artist: "Idina Menzel",
-        album: "Frozen",
-      },
-      {
-        id: 2,
-        name: "Fear of the dark",
-        artist: "iron maiden",
-        album: "fear of the dark",
-      },
-      {
-        id: 3,
-        name: "I can't wait forever",
-        artist: "simple plan",
-        album: "perfect",
-      },
-      {
-        id: 4,
-        name: "Let It Go",
-        artist: "Idina Menzel",
-        album: "Frozen",
-      },
-      {
-        id: 5,
-        name: "Fear of the dark",
-        artist: "iron maiden",
-        album: "fear of the dark",
-      },
-      {
-        id: 6,
-        name: "I can't wait forever",
-        artist: "simple plan",
-        album: "perfect",
-      },
-    ];
-    return hardCodedResult;
-  }
-
-  return result;
-}
+import axios from "axios";
 
 export default function Home() {
+  // * here we store some state variables for the aplication.
+  // * result will have tracks fetched from the api by the
+  // * search string. Playlist will store the items added
+  // * by the user.
   const [result, setResult] = useState([]);
+  const [searchString, setSearchString] = useState("");
   const [playlist, setPlaylist] = useState({
     name: "My Playlist",
     tracks: [],
   });
+
+  //* token will be store here.
+  const [token, setToken] = useState("");
+
+  // * constant variables for spotify connection.
+  const CLIENT_ID = "9e07c60e324140db84da597fe148a59b";
+  const REDIRECT_URI = "http://localhost:3000/";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
+
+  useEffect(() => {
+    //* we use the useeffect to get the token from spotify.
+    //* if token is present we set the token otherwise
+    //* we get the new token from the browser hash.
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
+
+    if (!token && hash) {
+      token = hash
+        .substring(1)
+        .split("&")
+        .find((elem) => elem.startsWith("access_token"))
+        .split("=")[1];
+
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
+    }
+
+    setToken(token);
+  }, []);
+
+  // * this logout the user from spotify by
+  // * removing the token from local storage.
+  const logout = () => {
+    setToken("");
+    window.localStorage.removeItem("token");
+  };
+
+  // * Here we handle the api search, we connect to
+  // * the spotify api with axios and we update the
+  // *  result array with new search items.
+  const handleSearchTracks = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        q: searchString,
+        type: "track",
+      },
+    });
+    setResult(data.tracks.items);
+  };
 
   // * When user changes title for playlist we update the state
   // * variable that holds the title of the playlist.
@@ -68,15 +80,16 @@ export default function Home() {
     setPlaylist({ ...playlist, name: event.target.value });
   }
 
+  // * when the user search the input we set the new input
+  // * to the searchString.
   function handleSearch(event) {
     // * Prevents from reloading.
     event.preventDefault();
-    // * When user searches it will make an API call to spotify
-    // * then the result will be stored on result->useState.
-    setResult(makeApiCall(event.target.value));
+
+    setSearchString(event.target.value);
   }
 
-  //* this function handles how to add a track to the playlist.
+  // * this function handles how to add a track to the playlist.
   function handleAddToPlaylist(id) {
     // * if the song it is already on the playlist
     // * this function returns.
@@ -116,7 +129,7 @@ export default function Home() {
     <>
       <Nav />
       <div className="m-4 lg:mx-28 xl:mx-56 ">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} searchTracks={handleSearchTracks} />
       </div>
       <div className="mx-4 lg:mx-28 xl:mx-56 my-10 flex flex-wrap gap-4 justify-center sm:flex-nowrap">
         <SearchResults result={result} addToPlaylist={handleAddToPlaylist} />
@@ -130,6 +143,15 @@ export default function Home() {
       <div className="text-center m-4 lg:mx-28 xl:mx-56">
         <SaveButton onClick={handleSaveToSpotify} />
       </div>
+      {!token ? (
+        <a
+          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+        >
+          Login to Spotify
+        </a>
+      ) : (
+        <button onClick={logout}>Logout</button>
+      )}
     </>
   );
 }

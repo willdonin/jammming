@@ -1,19 +1,15 @@
 import React from "react";
 import { useState } from "react";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, searchTracks }) {
   // * the const value, stores the value for the input param
   // * when the value is updated, the update is sent to the
   // * button, which the value is used to store the state
   // * of the variable that holds the search text on the parent.
   const [value, setValue] = useState("");
 
-  function handleChange(event) {
-    setValue(event.target.value);
-  }
-
   return (
-    <form>
+    <form onSubmit={searchTracks}>
       {/* this label is hidden from normal screens it only shows in case of screen readers. */}
       <label
         for="default-search"
@@ -47,13 +43,11 @@ export default function SearchBar({ onSearch }) {
           id="default-search"
           className="block w-full p-4 pl-10 text-sm ring border rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-purple-400/75 outline-0"
           placeholder="Search Songs, Artists..."
-          onChange={handleChange}
+          onChange={onSearch}
           required
         ></input>
         {/* button value is updated as the user changes the input value */}
         <button
-          value={value}
-          onClick={onSearch}
           type="submit"
           className="text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 bg-purple-600 hover:bg-purple-700"
         >

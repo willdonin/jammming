@@ -19,9 +19,9 @@ export default function Track({
   return (
     <li key={track.id} className={style.name}>
       <p>
-        {track.name} ({track.album})
+        {track.name} ({track.album.name})
         <span className={style.artist}>
-          <span className={style.by}>by</span> {track.artist}
+          <span className={style.by}>by</span> {track.artists[0].name}
         </span>
       </p>
       <TrackButton
