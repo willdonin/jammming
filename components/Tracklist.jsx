@@ -4,10 +4,9 @@ import Track from "./Track";
 // ** This object holds all styles for the Tracklist component.
 // ** we keep the code DRY here.
 const style = {
-  box: "basis-full sm:basis-6/12 bg-purple-600/[0.40] rounded-lg p-4 ",
+  box: "basis-full sm:basis-6/12 bg-purple-600/[0.40] rounded-lg p-4",
   title:
     "text-center w-full py-2 border rounded font-bold bg-purple-600/25 border-purple-400/75 mb-4 ",
-  input: "placeholder:text-white ",
   noResult:
     "flex justify-center py-4 px-2 border-b border-purple-400/75 last:border-none capitalize ",
 };
@@ -15,7 +14,7 @@ const style = {
 export default function Tracklist({
   title,
   tracks,
-  inputTitle,
+  placeholder,
   onChange,
   addToPlaylist,
   onRemove,
@@ -31,11 +30,12 @@ export default function Tracklist({
         <input
           type="text"
           onChange={onChange}
-          placeholder={inputTitle}
-          className={style.title + style.input}
+          placeholder={placeholder}
+          className={style.title}
+          required
         />
       )}
-      <ul className="">
+      <ul className="max-h-[400px] overflow-scroll">
         {/* if the component contains track we are going to display it
             else we will show that the result is empty. */}
         {tracks.length ? (

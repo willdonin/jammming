@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-export default function SearchBar({ onSearch, searchTracks }) {
+export default function SearchBar({ onSearch }) {
   // * the const value, stores the value for the input param
   // * when the value is updated, the update is sent to the
   // * button, which the value is used to store the state
@@ -9,7 +9,11 @@ export default function SearchBar({ onSearch, searchTracks }) {
   const [value, setValue] = useState("");
 
   return (
-    <form onSubmit={searchTracks}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       {/* this label is hidden from normal screens it only shows in case of screen readers. */}
       <label
         for="default-search"
@@ -46,13 +50,6 @@ export default function SearchBar({ onSearch, searchTracks }) {
           onChange={onSearch}
           required
         ></input>
-        {/* button value is updated as the user changes the input value */}
-        <button
-          type="submit"
-          className="text-white absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 bg-purple-600 hover:bg-purple-700"
-        >
-          Search
-        </button>
       </div>
     </form>
   );

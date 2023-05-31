@@ -4,7 +4,7 @@ import React from "react";
 // * This styles the button. All buttons have a standard style
 // * and depending on he condition we add some extra styling.
 const style = {
-  button: "ml-2 hover:text-white text-lg px-2 rounded-full",
+  button: "ml-2 hover:text-white text-2xl px-2 rounded-full",
   add: "hover:bg-blue-700/75 bg-blue-700/25",
   remove: "hover:bg-red-700/75 bg-red-700/25",
 };
